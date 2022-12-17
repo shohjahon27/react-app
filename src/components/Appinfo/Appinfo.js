@@ -1,12 +1,16 @@
 import './Appinfo.css';
 
-const Appinfo = () => { 
-    return (
-      <div className="Appinfo">
-        <p className="fs-3 text-uppercase">Barcha kinolar soni: </p>
-        <p className="fs-4 text-uppercase">Ko'rilgan kinolar soni: </p>
-      </div>
-    );
-}
+const Appinfo = ({ allMoviesCount, increaseMovieCount }) => {
+  return (
+    <div className="Appinfo">
+      <p className="fs-3 text-uppercase">
+        Barcha kinolar soni: {allMoviesCount}
+      </p>
+      <p className="fs-4 text-uppercase">
+        Sevimli kinolar: {increaseMovieCount}
+      </p>
+    </div>
+  );
+};
 
 export default Appinfo;

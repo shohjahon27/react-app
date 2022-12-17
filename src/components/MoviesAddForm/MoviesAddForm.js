@@ -1,5 +1,4 @@
 import { Component } from "react";
-import { v4 as uuidv4 } from "uuid";
 import "./MoviesAddForm.css";
 
 class MoviesAddForm extends Component {
@@ -17,7 +16,7 @@ class MoviesAddForm extends Component {
 
   addFormHandler = (e) => {
     e.preventDefault()
-    this.props.addForm( { name: this.state.name, viewers: this.state.views, id: uuidv4() } )
+    this.props.addForm( { name: this.state.name, viewers: this.state.views } )
     this.setState( {
       name: '',
       views: '',

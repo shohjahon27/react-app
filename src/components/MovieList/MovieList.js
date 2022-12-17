@@ -1,16 +1,19 @@
 import "./MovieList.css";
 import MovieListItem from "../MovieListItem/MovieListItem";
 
-const MovieList = ({ data, onDelete }) => {
+const MovieList = ({ data, onDelete, onToggleIncrease, onToggleLike }) => {
   return (
     <ul className="MovieList">
-      {data.map(item => (
+      {data.map((item) => (
         <MovieListItem
           key={item.id}
           name={item.name}
           viewers={item.viewers}
           increase={ item.increase }
-          onDelete={ () => onDelete(item.id) }
+          like={ item.like }
+          onDelete={() => onDelete(item.id)}
+          onToggleIncrease={() => onToggleIncrease(item.id)}
+          onToggleLike={() => onToggleLike(item.id)}
         />
       ))}
     </ul>

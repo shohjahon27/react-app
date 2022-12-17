@@ -12,9 +12,9 @@ class App extends Component {
     super(props);
     this.state = {
       data: [
-        { name: "Ertugrul", viewers: 890, increase: false, id: 1 },
-        { name: "Empire of Usman", viewers: 54, increase: false, id: 2 },
-        { name: "Omar", viewers: 784, increase: true, id: 3 },
+        { name: "Ertugrul", viewers: 890, increase: false, like: false, id: 1 },
+        { name: "Empire of Usman", viewers: 54, increase: false, like: false, id: 2 },
+        { name: "Omar", viewers: 784, increase: false, like: false, id: 3 },
       ],
     };
   }
@@ -23,27 +23,66 @@ class App extends Component {
     this.setState(({ data }) => ({ data: data.filter((c) => c.id !== id) }));
   };
 
-  addForm = ( item) => {
+  addForm = ( item ) => {
+    const newItem = { name: item.name, viewers: item.viewers, id: uuidv4(), increase: true, like: true,  };
     this.setState( ( { data } ) => {
-      const newArr = [...data, {...item, id: uuidv4()}]
+      const newArr = [...data, { ...item, newItem }];
       return {
         data: newArr,
       }
     } )
   }
 
+  onToggleIncrease = ( id ) => {
+    this.setState( ( { data } ) => {
+      const newArr = data.map( item => {
+        if ( item.id === id ) { 
+          return {...item, increase: !item.increase}
+        }
+        return item
+      } )
+      return {
+        data: newArr,
+      }
+    })
+  }
+
+  onToggleLike = ( id) => { 
+        this.setState(({ data }) => {
+          const newArr = data.map((item) => {
+            if (item.id === id) {
+              return { ...item, like: !item.like };
+            }
+            return item;
+          });
+          return {
+            data: newArr,
+          };
+        });
+  }
+
   render() {
     const { data } = this.state;
+    const allMoviesCount = data.length;
+    const increaseMovieCount = data.filter( m => m.increase ).length;
     return (
       <div className="App font-monospace">
         <div className="content">
-          <Appinfo />
+          <Appinfo
+            allMoviesCount={allMoviesCount}
+            increaseMovieCount={increaseMovieCount}
+          />
           <div className="Searchpanel">
             <Searchpanel />
             <Appfilter />
           </div>
-          <MovieList data={data} onDelete={this.onDelete} />
-          <MoviesAddForm addForm={ this.addForm} />
+          <MovieList
+            onToggleIncrease={this.onToggleIncrease}
+            onToggleLike={this.onToggleLike}
+            data={data}
+            onDelete={this.onDelete}
+          />
+          <MoviesAddForm addForm={this.addForm} />
         </div>
       </div>
     );
