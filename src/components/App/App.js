@@ -23,6 +23,7 @@ class App extends Component {
         { name: "Omar", viewers: 784, increase: false, like: false, id: 3 },
       ],
       term: "",
+      filter: "all",
     };
   }
 
@@ -81,15 +82,27 @@ class App extends Component {
     return arr.filter((item) => item.name.toLowerCase().indexOf(term) > -1);
   };
 
-  updateTermHandler = ( term ) => { 
-    this.setState( { term })
-  }
+  filterHandler = (arr, filter) => {
+    switch (filter) {
+      case "popular":
+        return arr.filter((c) => c.like);
+      case "mostViewed":
+        return arr.filter((c) => c.viewers > 800);
+      default:
+        return arr
+    }
+  };
+
+  updateTermHandler = (term) =>  this.setState({ term });
+
+
+  updateHandlerFilter = filter => this.setState({ filter });
 
   render() {
-    const { data, term } = this.state;
+    const { data, term, filter } = this.state;
     const allMoviesCount = data.length;
     const increaseMovieCount = data.filter((m) => m.increase).length;
-    const visibleDate = this.SearchHandler(data, term);
+    const visibleDate = this.filterHandler(this.SearchHandler(data, term ),filter);
     return (
       <div className="App font-monospace">
         <div className="content">
@@ -99,7 +112,7 @@ class App extends Component {
           />
           <div className="Searchpanel">
             <Searchpanel updateTermHandler={this.updateTermHandler} />
-            <Appfilter />
+            <Appfilter filter={filter} updateHandlerFilter={this.updateHandlerFilter} />
           </div>
           <MovieList
             onToggleIncrease={this.onToggleIncrease}
